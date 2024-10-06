@@ -12,7 +12,6 @@
 - 加密界面
 - 解密界面
 - 暴力破解界面
-![image](https://github.com/taoyanxiayutian/S_DES_HLDDZ/blob/master/images/Decrypt.gif)
 ![overview.gif](images%2Foverview.gif)
 ## 1.2 加密界面
 > 在这里可以实现**8bit二进制明文**和**任意bit的ASCII字符**的加密，
@@ -37,7 +36,9 @@
 # 2. 交叉验证
 - **组内交叉验证** 针对加解密的结果（二进制和ASCII码）进行交叉验证，
 发现可以完成逆向验证，这里只展示二进制的交叉验证如下图所示：
+
 ![confirm.gif](images%2Fconfirm.gif)
+
 - **组间交叉验证** 我们同其他组（）针对加解密的结果（二进制和ASCII码）进行交叉验证，
   发现依然可以完成逆向验证。
 
