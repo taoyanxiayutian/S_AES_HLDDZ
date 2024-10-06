@@ -12,6 +12,7 @@
 - 加密界面
 - 解密界面
 - 暴力破解界面
+![image](https://github.com/taoyanxiayutian/S_DES_HLDDZ/blob/master/images/Decrypt.gif)
 ![overview.gif](images%2Foverview.gif)
 ## 1.2 加密界面
 > 在这里可以实现**8bit二进制明文**和**任意bit的ASCII字符**的加密，
