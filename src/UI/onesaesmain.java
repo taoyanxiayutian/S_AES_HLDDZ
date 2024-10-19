@@ -2,9 +2,8 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
-public class saesmain extends JFrame {
+public class onesaesmain extends JFrame {
 	private JFrame frame;
 	private RoundedPanel jpEncrypt, jpDecrypt;
 	private JLabel jlabEncrypt1, jlabEncrypt2, jlabEncrypt3, jlabDecrypt1, jlabDecrypt2, jlabDecrypt3,jlabplaintext,jlabciphertext,jlabuse,jlabtime;
@@ -17,7 +16,7 @@ public class saesmain extends JFrame {
 
 
 	//构造函数
-	public saesmain() {
+	public onesaesmain() {
 		initializeUI();
 	}
 
@@ -63,7 +62,7 @@ public class saesmain extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		// 加密面板随机生成密钥按钮
-		butRandomKeyA = MainMenu.createRoundedButton("随机", buttonFont, primaryColor);
+		butRandomKeyA = Menumain.createRoundedButton("随机", buttonFont, primaryColor);
 
 		//明文
 		jlabEncrypt2 = new JLabel("二进制明文(16位)");
@@ -88,8 +87,8 @@ public class saesmain extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		//button
-		butEncrypt1 = MainMenu.createRoundedButton("加密", buttonFont, primaryColor);
-		butEncrypt2 = MainMenu.createRoundedButton("全部重置", buttonFont, primaryColor);
+		butEncrypt1 = Menumain.createRoundedButton("加密", buttonFont, primaryColor);
+		butEncrypt2 = Menumain.createRoundedButton("全部重置", buttonFont, primaryColor);
 
 		//加密结果框
 		outputEncrypt = new JTextArea(10, 40);
@@ -134,8 +133,8 @@ public class saesmain extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		//button
-		butDecrypt1 = MainMenu.createRoundedButton("加密", buttonFont, primaryColor);
-		butDecrypt2 = MainMenu.createRoundedButton("全部重置", buttonFont, primaryColor);
+		butDecrypt1 = Menumain.createRoundedButton("解密", buttonFont, primaryColor);
+		butDecrypt2 = Menumain.createRoundedButton("全部重置", buttonFont, primaryColor);
 
 		//结果框
 		outputDecrypt = new JTextArea(10, 40);
@@ -146,7 +145,7 @@ public class saesmain extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		// 解密面板随机生成密钥按钮
-		butRandomKeyB = MainMenu.createRoundedButton("随机", buttonFont, primaryColor);
+		butRandomKeyB = Menumain.createRoundedButton("随机", buttonFont, primaryColor);
 
 		// 选项卡
 		jtbp = new JTabbedPane();

@@ -1,22 +1,14 @@
 package UI;
 
-import functionalClass.BruteForceCracker;
+import javax.swing.*;
 
 public class Main {
-	public static void main(String []args)
-	{
-		mainwindow SEDS=new mainwindow();
-		SEDS.displayWindow();
-		PoliceListenEncrypt policeEncrypt=new PoliceListenEncrypt();
-		PoliceListenDecrypt policeDecrypt=new PoliceListenDecrypt();
-		ClearAllListen clPoliceEncrypt=new ClearAllListen();
-		ClearAllListen clPoliceDecrypt=new ClearAllListen();
-		SEDS.setBruteForceListener(new BruteForceCracker());
 
-		SEDS.setMyCommandListener(policeEncrypt);
-		SEDS.setMyCommandListenerB(policeDecrypt);
-		SEDS.setMyCommandListenerClear(clPoliceEncrypt);
-		SEDS.setMyCommandListenerClearD(clPoliceDecrypt);
-
+	public static void main(String[] args) {
+		// 显示主菜单
+		SwingUtilities.invokeLater(() -> {
+			Menumain mainMenu = new Menumain();
+			mainMenu.setVisible(true);
+		});
 	}
 }

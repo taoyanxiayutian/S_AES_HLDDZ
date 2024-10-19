@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class threesaesmain extends JFrame {
     private JFrame frame;
-    private JTabbedPane jtbp_2;
+    private JTabbedPane jtbp_3;
     private RoundedPanel jpEncrypt, jpDecrypt;
     private JLabel jlabEncrypt1, jlabEncrypt2, jlabEncrypt3;
     private JLabel jlabDecrypt1, jlabDecrypt2, jlabDecrypt3;
@@ -64,7 +64,7 @@ public class threesaesmain extends JFrame {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         // 加密面板随机生成密钥按钮
-        butrandomA1 = MainMenu.createRoundedButton("随机", buttonFont, primaryColor);
+        butrandomA1 = Menumain.createRoundedButton("随机", buttonFont, primaryColor);
 
         //明文
         jlabEncrypt2 = new JLabel("二进制密钥2(16位)");
@@ -75,7 +75,7 @@ public class threesaesmain extends JFrame {
         keyA2.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(primaryColor),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        butrandomA2 = MainMenu.createRoundedButton("随机", buttonFont, primaryColor);
+        butrandomA2 = Menumain.createRoundedButton("随机", buttonFont, primaryColor);
 
         jlabEncrypt3 = new JLabel("二进制明文(16位)");
         jlabEncrypt3.setFont(labelFont);
@@ -87,8 +87,8 @@ public class threesaesmain extends JFrame {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         //button
-        butEncrypt1 = MainMenu.createRoundedButton("加密", buttonFont, primaryColor);
-        butEncrypt2 = MainMenu.createRoundedButton("全部重置", buttonFont, primaryColor);
+        butEncrypt1 = Menumain.createRoundedButton("加密", buttonFont, primaryColor);
+        butEncrypt2 = Menumain.createRoundedButton("全部重置", buttonFont, primaryColor);
 
         //加密结果框
         outputEncrypt = new JTextArea(10, 40);
@@ -107,7 +107,7 @@ public class threesaesmain extends JFrame {
         keyB1.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(primaryColor),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        butrandomB1 = MainMenu.createRoundedButton("随机", buttonFont, primaryColor);
+        butrandomB1 = Menumain.createRoundedButton("随机", buttonFont, primaryColor);
 
         //key2
         jlabDecrypt2 = new JLabel("二进制密钥2(16位)");
@@ -118,7 +118,7 @@ public class threesaesmain extends JFrame {
         keyB2.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(primaryColor),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-        butrandomB2 = MainMenu.createRoundedButton("随机", buttonFont, primaryColor);
+        butrandomB2 = Menumain.createRoundedButton("随机", buttonFont, primaryColor);
 
         jlabDecrypt3 = new JLabel("二进制密文(16位)");
         jlabDecrypt3.setFont(labelFont);
@@ -130,8 +130,8 @@ public class threesaesmain extends JFrame {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         //button
-        butDecrypt1 = MainMenu.createRoundedButton("解密", buttonFont, primaryColor);
-        butDecrypt2 = MainMenu.createRoundedButton("全部重置", buttonFont, primaryColor);
+        butDecrypt1 = Menumain.createRoundedButton("解密", buttonFont, primaryColor);
+        butDecrypt2 = Menumain.createRoundedButton("全部重置", buttonFont, primaryColor);
 
         //结果框
         outputDecrypt = new JTextArea(10, 40);
@@ -142,7 +142,7 @@ public class threesaesmain extends JFrame {
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
         // 选项卡
-        jtbp_2 = new JTabbedPane();
+        jtbp_3 = new JTabbedPane();
 
     }
 
@@ -158,16 +158,16 @@ public class threesaesmain extends JFrame {
         addComponentsToPanel(jpDecrypt, gbc);
 
         // 添加选项卡
-        jtbp_2.addTab("加密", jpEncrypt);
-        jtbp_2.addTab("解密", jpDecrypt);
-        jtbp_2.setFont(new Font("楷体", Font.BOLD, 15));
+        jtbp_3.addTab("加密", jpEncrypt);
+        jtbp_3.addTab("解密", jpDecrypt);
+        jtbp_3.setFont(new Font("楷体", Font.BOLD, 15));
 
         // 设置选项卡外观
-        jtbp_2.setForeground(new Color(50, 100, 0));
-        jtbp_2.setBorder(BorderFactory.createEmptyBorder());
+        jtbp_3.setForeground(new Color(50, 100, 0));
+        jtbp_3.setBorder(BorderFactory.createEmptyBorder());
 
         // 设置内容面板
-        frame.setContentPane(jtbp_2);
+        frame.setContentPane(jtbp_3);
         frame.pack();
         //frame.setResizable(false);
         frame.setLocationRelativeTo(null);

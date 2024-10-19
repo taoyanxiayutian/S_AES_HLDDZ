@@ -1,52 +1,91 @@
 package functionalClass;
-import javax.swing.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static functionalClass.funcforaes.*;
 
 public class AESMiddleAttack {
-    // 假设这是AES的简化加密方法（替代实际的AES算法）
-    public static String encrypt(String key, String plaintext) {
-        // 简单加密逻辑：假设每次加密只是XOR操作
-        return xor(key, plaintext);
-    }
 
-    // 假设这是AES的简化解密方法（替代实际的AES算法）
-    public static String decrypt(String key, String ciphertext) {
-        // 简单解密逻辑：XOR的逆运算仍然是XOR
-        return xor(key, ciphertext);
-    }
+    // 中间相遇攻击的模拟过程，支持多对明密文输入
+    public static String performMiddleAttack(List<String[]> plaintextCiphertextPairs) {
+        // 中间值映射表
+        Map<Integer, String> intermediateValues = new HashMap<>();
+        List<String> foundKeys = new ArrayList<>();
 
-    // XOR运算作为简单的加密解密模拟
-    private static String xor(String key, String text) {
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < text.length(); i++) {
-            result.append(key.charAt(i) == text.charAt(i) ? '0' : '1');
-        }
-        return result.toString();
-    }
+        // 遍历所有的密钥1，计算每对明文的中间加密结果
+        for (int key1 = 0; key1 < 0x10000; key1++) {
+            boolean validKey1 = true;
+            for (String[] pair : plaintextCiphertextPairs) {
+                String plaintext = pair[0];
+                String encrypted = funcforaes.encrypt(plaintext, String.format("%16s", Integer.toBinaryString(key1)).replace(' ', '0'));
+                int[] encryptedArray = From16to4(encrypted);
+                int intermediateValue = matrixToInt(S_replace(encryptedArray));
 
-    // 中间相遇攻击的模拟过程
-    public static String performMiddleAttack(String plaintext, String ciphertext, JTextArea output) {
-        // 初始化
-        output.append("开始中间相遇攻击...\n");
-
-        // 遍历所有可能的密钥组合
-        for (int i = 0; i < 65536; i++) {
-            String key1 = String.format("%16s", Integer.toBinaryString(i)).replace(' ', '0');
-            String intermediateEncrypt = encrypt(key1, plaintext);
-
-            for (int j = 0; j < 65536; j++) {
-                String key2 = String.format("%16s", Integer.toBinaryString(j)).replace(' ', '0');
-                String intermediateDecrypt = decrypt(key2, ciphertext);
-
-                // 输出查找过程
-                output.append("尝试密钥1: " + key1 + " | 尝试密钥2: " + key2 + "\n");
-
-                if (intermediateEncrypt.equals(intermediateDecrypt)) {
-                    output.append("找到匹配的密钥对!\n");
-                    return "密钥1: " + key1 + " 密钥2: " + key2;
+                // 检查是否与之前不同的中间值冲突
+                if (!intermediateValues.containsKey(intermediateValue)) {
+                    intermediateValues.put(intermediateValue, String.format("%16s", Integer.toBinaryString(key1)).replace(' ', '0'));
+                } else if (!intermediateValues.get(intermediateValue).equals(String.format("%16s", Integer.toBinaryString(key1)).replace(' ', '0'))) {
+                    validKey1 = false;
+                    break;
                 }
             }
+            if (!validKey1) {
+                continue; // 如果此密钥1无效，则跳过
+            }
         }
-        output.append("未找到匹配的密钥对\n");
-        return "攻击失败";
+
+        // 遍历所有的密钥2，计算每对密文的中间解密结果
+        for (int key2 = 0; key2 < 0x10000; key2++) {
+            boolean validKey2 = true;
+            String matchingKey1 = null;
+
+            for (String[] pair : plaintextCiphertextPairs) {
+                String ciphertext = pair[1];
+                String decrypted = funcforaes.decrypt(ciphertext, String.format("%16s", Integer.toBinaryString(key2)).replace(' ', '0'));
+                int[] decryptedArray = From16to4(decrypted);
+                int intermediateValue = matrixToInt(S_replace(decryptedArray));
+
+                // 检查是否在中间值字典中存在
+                if (intermediateValues.containsKey(intermediateValue)) {
+                    if (matchingKey1 == null) {
+                        matchingKey1 = intermediateValues.get(intermediateValue);
+                    } else if (!matchingKey1.equals(intermediateValues.get(intermediateValue))) {
+                        validKey2 = false;
+                        break;
+                    }
+                } else {
+                    validKey2 = false;
+                    break;
+                }
+            }
+
+            // 如果找到匹配的密钥对，记录密钥1和密钥2
+            if (validKey2 && matchingKey1 != null) {
+                // 确保密钥对的输出为16位
+                String formattedKey1 = String.format("%16s", matchingKey1).replace(' ', '0');
+                String formattedKey2 = String.format("%16s", Integer.toBinaryString(key2)).replace(' ', '0');
+
+                // 确保密钥对是完整的32位（16位密钥1和16位密钥2）
+                foundKeys.add(formattedKey1 + " " + formattedKey2);
+            }
+        }
+
+        // 返回找到的密钥对，如果为空则表示未找到，使用逗号换行分隔
+        return foundKeys.isEmpty() ? "未找到密钥" : String.join(",\n", foundKeys);
+    }
+
+
+
+
+    // 矩阵转换为整数
+    public static int matrixToInt(int[] array) {
+        StringBuilder binString = new StringBuilder();
+        for (int i : array) {
+            binString.append(ToBinary(i, 4));
+        }
+        return Integer.parseInt(binString.toString(), 2);
     }
 }

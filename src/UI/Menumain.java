@@ -5,10 +5,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainMenu extends JFrame {
+public class Menumain extends JFrame {
     private RoundedButton but1, but2, but3, but4;
 
-    public MainMenu() {
+    public Menumain() {
         // 设置统一的字体和颜色
         Font labelFont = new Font("楷体", Font.BOLD, 16);
         Font buttonFont = new Font("楷体", Font.BOLD, 16);
@@ -34,7 +34,7 @@ public class MainMenu extends JFrame {
         gbc.gridy = 0;
         gbc.gridwidth = 2; // 占据2列
         gbc.anchor = GridBagConstraints.CENTER;
-        JLabel titleLabel = new JLabel("加密解密工具", JLabel.CENTER);
+        JLabel titleLabel = new JLabel("S-AES工具表", JLabel.CENTER);
         titleLabel.setFont(new Font("Serif", Font.BOLD, 24)); // 使用更大的字体
         mainPanel.add(titleLabel, gbc);
 
@@ -44,8 +44,8 @@ public class MainMenu extends JFrame {
 
         // 创建按钮
         but1 = createRoundedButton("普通程序 (s_aes)", buttonFont, primaryColor);
-        but2 = createRoundedButton("双重加密 (2saes)", buttonFont, primaryColor);
-        but3 = createRoundedButton("三重加密 (3saes)", buttonFont, primaryColor);
+        but2 = createRoundedButton("双重加密 (2s_aes)", buttonFont, primaryColor);
+        but3 = createRoundedButton("三重加密 (3s_aes)", buttonFont, primaryColor);
         but4 = createRoundedButton("CBC模式", buttonFont, primaryColor);
 
         // 添加按钮到面板
@@ -134,9 +134,4 @@ public class MainMenu extends JFrame {
         return button;
     }
 
-    public static void main(String[] args) {
-        // 显示主菜单窗口
-        MainMenu menu = new MainMenu();
-        menu.setVisible(true);
-    }
 }

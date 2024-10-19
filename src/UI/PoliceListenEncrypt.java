@@ -1,10 +1,9 @@
 //解密界面的一些监听器设置
 package UI;
-import functionalClass.Encrypt;
+import functionalClass.funcforaes;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
 
 public class PoliceListenEncrypt implements MyCommandListener {
 	JTextField keyA,plaintext,plaintextASCII;
@@ -29,25 +28,25 @@ public class PoliceListenEncrypt implements MyCommandListener {
 		String asciiPlaintext = plaintextASCII.getText();
 
 		// 检查密钥
-		if (!isValidBinary(key, 10)) {
-			showError("密钥必须是10位二进制数。");
+		if (!isValidBinary(key, 16)) {
+			showError("密钥必须是16位二进制数。");
 			return;
 		}
 
 		// 检查并处理输入
 		if (!binaryPlaintext.isEmpty() && asciiPlaintext.isEmpty()) {
 			// 处理二进制明文
-			if (!isValidBinary(binaryPlaintext, 8)) {
-				showError("二进制明文必须是8位二进制数。");
+			if (!isValidBinary(binaryPlaintext, 16)) {
+				showError("二进制明文必须是16位二进制数。");
 				return;
 			}
 			int[] plainBinary = StringToBinary(binaryPlaintext);
-			int[] ciphertext = Encrypt.encryptData(plainBinary, key);
-			outputEncrypt.append("二进制明文加密结果: " + Arrays.toString(ciphertext) + "\n");
+			String ciphertext = funcforaes.encrypt(binaryPlaintext, key);
+			outputEncrypt.append("二进制明文加密结果: " + ciphertext + "\n");
 		} else if (binaryPlaintext.isEmpty() && !asciiPlaintext.isEmpty()) {
 			// 处理ASCII明文
 			String normalizedPlaintext = normalizeASCIIInput(asciiPlaintext);
-			String ciphertextASCII = Encrypt.encryptASCII(normalizedPlaintext, key);
+			String ciphertextASCII = funcforaes.encryptASCII(normalizedPlaintext, key);
 			outputEncrypt.append("ASCII明文加密结果: " + displayString(ciphertextASCII) + "\n");
 		} else if (!binaryPlaintext.isEmpty() && !asciiPlaintext.isEmpty()) {
 			showError("请只在二进制明文或ASCII明文中输入一种。");

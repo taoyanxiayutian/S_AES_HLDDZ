@@ -5,47 +5,46 @@ import functionalClass.funcforaes;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class PoliceListenEncrypt2 implements MyCommandListener {
-    JTextField keyA1,keyA2,plaintext;
-    JTextArea outputEncrypt;
+public class PoliceListenDecrypt2 implements MyCommandListener {
+    JTextField keyB1,keyB2,ciphertext;
+    JTextArea outputDecrypt;
 
     public void setJTextField1(JTextField text) {
-        keyA1=text;
+        keyB1=text;
     }
     public void setJTextField2(JTextField text) {
-        keyA2=text;
+        keyB2=text;
     }
     public void setJTextField3(JTextField text) {
-        plaintext=text;
+        ciphertext=text;
     }
     public void setJTextArea(JTextArea area) {
-        outputEncrypt=area;
+        outputDecrypt=area;
     }
 
     public void actionPerformed(ActionEvent e) {
-        String keyA1Text = keyA1.getText();
-        String keyA2Text = keyA2.getText();
-        String binaryPlaintext = plaintext.getText();
+        String keyB1Text = keyB1.getText();
+        String keyB2Text = keyB2.getText();
+        String binaryciphertext = ciphertext.getText();
 
         // 检查密钥
-        if (!isValidBinary(keyA1Text, 16)&&!isValidBinary(keyA2Text, 16)) {
+        if (!isValidBinary(keyB1Text, 16)&&!isValidBinary(keyB2Text, 16)) {
             showError("密钥必须是16位二进制数。");
             return;
         }
 
         // 检查并处理输入
-        if (!binaryPlaintext.isEmpty()) {
+        if (!binaryciphertext.isEmpty()) {
             // 处理二进制明文
-            if (!isValidBinary(binaryPlaintext, 16)) {
-                showError("二进制明文必须是16位二进制数。");
+            if (!isValidBinary(binaryciphertext, 16)) {
+                showError("二进制密文必须是16位二进制数。");
                 return;
             }
-            int[] plainBinary = StringToBinary(binaryPlaintext);
-            String ciphertext1 = funcforaes.encrypt(binaryPlaintext, keyA1Text);
-            String ciphertext2 = funcforaes.encrypt(binaryPlaintext, keyA2Text);
-            outputEncrypt.append("二进制明文加密结果: " + ciphertext2 + "\n");
+            String plaintext1 = funcforaes.decrypt(binaryciphertext, keyB2Text);
+            String plaintext2 = funcforaes.decrypt(plaintext1, keyB1Text);
+            outputDecrypt.append("二进制明文解密结果: " + plaintext2 + "\n");
         } else {
-            showError("请输入明文（二进制或ASCII）。");
+            showError("请输入密文（二进制或ASCII）。");
             return;
         }
     }
@@ -66,15 +65,5 @@ public class PoliceListenEncrypt2 implements MyCommandListener {
         JOptionPane.showMessageDialog(null, message, "输入错误", JOptionPane.ERROR_MESSAGE);
     }
 
-
-    public static int[] StringToBinary(String str) {
-        int[] binary = new int[8];
-        for (int i = 0; i < 8; i++) {
-            Character ch = str.charAt(i);
-            binary[i] = Integer.parseInt(ch.toString());
-        }
-
-        return binary;
-    }
 
 }
