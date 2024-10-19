@@ -1,45 +1,40 @@
 package UI;
 
-import functionalClass.BruteForceListener;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class mainwindow extends JFrame {
+public class saesmain extends JFrame {
 	private JFrame frame;
-	private RoundedPanel jpEncrypt, jpDecrypt, jpForce;
+	private RoundedPanel jpEncrypt, jpDecrypt;
 	private JLabel jlabEncrypt1, jlabEncrypt2, jlabEncrypt3, jlabDecrypt1, jlabDecrypt2, jlabDecrypt3,jlabplaintext,jlabciphertext,jlabuse,jlabtime;
 	private JTabbedPane jtbp;
 	private JTextField keyA, keyB, plaintext, ciphertext, plaintextASCII, ciphertextASCII;
 	private JTextArea outputEncrypt, outputDecrypt,bruteForceOutputArea;
 	private RoundedButton butEncrypt1, butEncrypt2, butDecrypt1, butDecrypt2,butRandomKeyA,butRandomKeyB,bruteForceStartButton;
 	private MyCommandListener listener, listenerB, clearlistener;
-	private List<JTextField> bruteForceTextFields;
-	private List<JCheckBox> bruteForceCheckBoxes;
+
 
 
 	//构造函数
-	public mainwindow() {
+	public saesmain() {
 		initializeUI();
 	}
 
 	//具体的ui设计
 	private void initializeUI() {
-		frame = new JFrame("S-DES");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setSize(1000, 600);
+		frame = new JFrame("S-AES");
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setSize(1000, 600);
 
 		Color panelColor = new Color(240, 240, 240); // 浅灰色背景
 		jpEncrypt = new RoundedPanel(new GridBagLayout(), 15, panelColor);//加密界面
 		jpDecrypt = new RoundedPanel(new GridBagLayout(), 15, panelColor);//解密界面
-		jpForce = new RoundedPanel(new GridBagLayout(), 15, panelColor);//暴力破解界面
 
 		// 设置面板的边距
 		jpEncrypt.setBorder(BorderFactory.createEmptyBorder(30, 40, 20, 50));
 		jpDecrypt.setBorder(BorderFactory.createEmptyBorder(30, 40, 20, 50));
-		jpForce.setBorder(BorderFactory.createEmptyBorder(30, 40, 20, 50));
+
 
 		// 设置整体主题
 		try {
@@ -57,10 +52,10 @@ public class mainwindow extends JFrame {
 
 		// 加密面板组件
 		//密钥keyA
-		jlabEncrypt1 = new JLabel("二进制密钥(10位)");
+		jlabEncrypt1 = new JLabel("二进制密钥(16位)");
 		jlabEncrypt1.setFont(labelFont);
 		jlabEncrypt1.setForeground(primaryColor);
-		jlabEncrypt1.setToolTipText("请输入10位二进制密钥或随机生成");
+		jlabEncrypt1.setToolTipText("请输入16位二进制密钥或随机生成");
 		keyA = new JTextField(10);
 		keyA.setFont(labelFont);
 		keyA.setBorder(BorderFactory.createCompoundBorder(
@@ -68,18 +63,13 @@ public class mainwindow extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		// 加密面板随机生成密钥按钮
-		butRandomKeyA = new RoundedButton("随机");
-		butRandomKeyA.setFont(buttonFont);
-		butRandomKeyA.setBackground(primaryColor);
-		butRandomKeyA.setForeground(Color.WHITE);
-		butRandomKeyA.setFocusPainted(false);
-		butRandomKeyA.setBorderPainted(false);
+		butRandomKeyA = MainMenu.createRoundedButton("随机", buttonFont, primaryColor);
 
 		//明文
-		jlabEncrypt2 = new JLabel("二进制明文(8位)");
+		jlabEncrypt2 = new JLabel("二进制明文(16位)");
 		jlabEncrypt2.setFont(labelFont);
 		jlabEncrypt2.setForeground(primaryColor);
-		jlabEncrypt2.setToolTipText("请输入8位二进制明文");
+		jlabEncrypt2.setToolTipText("请输入16位二进制明文");
 		plaintext = new JTextField(16);
 		plaintext.setFont(labelFont);
 		plaintext.setBorder(BorderFactory.createCompoundBorder(
@@ -98,20 +88,8 @@ public class mainwindow extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		//button
-		butEncrypt1 = new RoundedButton("加密");
-		butEncrypt1.setFont(buttonFont);
-		butEncrypt1.setBackground(primaryColor);
-		butEncrypt1.setForeground(Color.WHITE);
-		butEncrypt1.setFocusPainted(false);
-		butEncrypt1.setBorderPainted(false);
-
-		//button
-		butEncrypt2 = new RoundedButton("全部重置");
-		butEncrypt2.setFont(buttonFont);
-		butEncrypt2.setBackground(primaryColor);
-		butEncrypt2.setForeground(Color.WHITE);
-		butEncrypt2.setFocusPainted(false);
-		butEncrypt2.setBorderPainted(false);
+		butEncrypt1 = MainMenu.createRoundedButton("加密", buttonFont, primaryColor);
+		butEncrypt2 = MainMenu.createRoundedButton("全部重置", buttonFont, primaryColor);
 
 		//加密结果框
 		outputEncrypt = new JTextArea(10, 40);
@@ -123,10 +101,10 @@ public class mainwindow extends JFrame {
 
 		// 解密面板组件
 		//密钥keyB
-		jlabDecrypt1 = new JLabel("二进制密钥(10位)");
+		jlabDecrypt1 = new JLabel("二进制密钥(16位)");
 		jlabDecrypt1.setFont(labelFont);
 		jlabDecrypt1.setForeground(primaryColor);
-		jlabDecrypt1.setToolTipText("请输入10位二进制密钥或随机生成");
+		jlabDecrypt1.setToolTipText("请输入16位二进制密钥或随机生成");
 		keyB = new JTextField(10);
 		keyB.setFont(labelFont);
 		keyB.setBorder(BorderFactory.createCompoundBorder(
@@ -134,10 +112,10 @@ public class mainwindow extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		//密文
-		jlabDecrypt2 = new JLabel("二进制密文(8位)");
+		jlabDecrypt2 = new JLabel("二进制密文(16位)");
 		jlabDecrypt2.setFont(labelFont);
 		jlabDecrypt2.setForeground(primaryColor);
-		jlabDecrypt2.setToolTipText("请输入8位二进制密文");
+		jlabDecrypt2.setToolTipText("请输入16位二进制密文");
 		ciphertext = new JTextField(16);
 		ciphertext.setFont(labelFont);
 		ciphertext.setBorder(BorderFactory.createCompoundBorder(
@@ -156,18 +134,8 @@ public class mainwindow extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		//button
-		butDecrypt1 = new RoundedButton("解密");
-		butDecrypt1.setFont(buttonFont);
-		butDecrypt1.setBackground(primaryColor);
-		butDecrypt1.setForeground(Color.WHITE);
-		butDecrypt1.setFocusPainted(false);
-		butDecrypt1.setBorderPainted(false);
-		butDecrypt2 = new RoundedButton("全部重置");
-		butDecrypt2.setFont(buttonFont);
-		butDecrypt2.setBackground(primaryColor);
-		butDecrypt2.setForeground(Color.WHITE);
-		butDecrypt2.setFocusPainted(false);
-		butDecrypt2.setBorderPainted(false);
+		butDecrypt1 = MainMenu.createRoundedButton("加密", buttonFont, primaryColor);
+		butDecrypt2 = MainMenu.createRoundedButton("全部重置", buttonFont, primaryColor);
 
 		//结果框
 		outputDecrypt = new JTextArea(10, 40);
@@ -178,66 +146,8 @@ public class mainwindow extends JFrame {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		// 解密面板随机生成密钥按钮
-		butRandomKeyB = new RoundedButton("随机");
-		butRandomKeyB.setFont(buttonFont);
-		butRandomKeyB.setBackground(primaryColor);
-		butRandomKeyB.setForeground(Color.WHITE);
-		butRandomKeyB.setFocusPainted(false);
-		butRandomKeyB.setBorderPainted(false);
+		butRandomKeyB = MainMenu.createRoundedButton("随机", buttonFont, primaryColor);
 
-		//暴力破解组件
-		jlabplaintext = new JLabel("二进制明文(8位)");
-		jlabplaintext.setFont(labelFont);
-		jlabplaintext.setForeground(primaryColor);
-
-		jlabciphertext = new JLabel("二进制密文(8位)");
-		jlabciphertext.setFont(labelFont);
-		jlabciphertext.setForeground(primaryColor);
-
-		jlabuse = new JLabel("使用");
-		jlabuse.setFont(labelFont);
-		jlabuse.setForeground(primaryColor);
-
-		bruteForceTextFields = new ArrayList<>();
-		bruteForceCheckBoxes = new ArrayList<>();
-
-		for (int i = 0; i < 3; i++) {
-
-			JTextField plaintextField = new JTextField(8);
-			plaintextField.setFont(labelFont);
-			plaintextField.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createLineBorder(primaryColor),
-					BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-			JTextField ciphertextField = new JTextField(8);
-			ciphertextField.setFont(labelFont);
-			ciphertextField.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createLineBorder(primaryColor),
-					BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-			JCheckBox checkBox = new JCheckBox();
-			bruteForceTextFields.add(plaintextField);
-			bruteForceTextFields.add(ciphertextField);
-			bruteForceCheckBoxes.add(checkBox);
-		}
-
-		bruteForceOutputArea = new JTextArea(10, 40);
-		bruteForceOutputArea.setEditable(false);
-		bruteForceOutputArea.setFont(labelFont);
-		bruteForceOutputArea.setBackground(secondaryColor);
-		bruteForceOutputArea.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(primaryColor),
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-		bruteForceStartButton = new RoundedButton("开始破解");
-		bruteForceStartButton.setFont(buttonFont);
-		bruteForceStartButton.setBackground(primaryColor);
-		bruteForceStartButton.setForeground(Color.WHITE);
-		bruteForceStartButton.setFocusPainted(false);
-		bruteForceStartButton.setBorderPainted(false);
-		jlabtime = new JLabel("耗时: 0 秒");
-		jlabtime.setFont(labelFont);
-		jlabtime.setForeground(primaryColor);
 		// 选项卡
 		jtbp = new JTabbedPane();
 
@@ -253,12 +163,10 @@ public class mainwindow extends JFrame {
 		addComponentsToPanel(jpEncrypt, gbc);
 		// 解密面板布局
 		addComponentsToPanel(jpDecrypt, gbc);
-		// 暴力破解布局
-		addBruteForceComponentsToPanel(jpForce, gbc);
+
 		// 添加选项卡
 		jtbp.addTab("加密", jpEncrypt);
 		jtbp.addTab("解密", jpDecrypt);
-		jtbp.addTab("暴力解密", jpForce);
 		jtbp.setFont(new Font("楷体", Font.BOLD, 15));
 
 		// 设置选项卡外观
@@ -348,54 +256,6 @@ public class mainwindow extends JFrame {
 
 
 	}
-	//暴力破解页面布局
-	private void addBruteForceComponentsToPanel(JPanel panel, GridBagConstraints gbc) {
-		panel.setLayout(new GridBagLayout());
-		gbc.insets = new Insets(5, 5, 5, 5);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.WEST;
-
-		// 标题行
-		gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 1;
-		panel.add(jlabplaintext, gbc);
-		gbc.gridx = 1;
-		panel.add(jlabciphertext, gbc);
-		gbc.gridx = 2;
-		panel.add(jlabuse, gbc);
-
-		// 输入行
-		for (int i = 0; i < 3; i++) {
-			gbc.gridy++;
-			gbc.gridx = 0;
-			gbc.gridwidth = 1;
-			panel.add(bruteForceTextFields.get(i * 2), gbc);
-			gbc.gridx = 1;
-			panel.add(bruteForceTextFields.get(i * 2 + 1), gbc);
-			gbc.gridx = 2;
-			panel.add(bruteForceCheckBoxes.get(i), gbc);
-		}
-
-		// 开始按钮
-		gbc.gridy++;
-		gbc.gridx = 0;
-		gbc.gridwidth = 3;
-		panel.add(bruteForceStartButton, gbc);
-
-		// 时间标签
-		gbc.gridy++;
-		gbc.gridwidth = 3;
-		panel.add(jlabtime, gbc);
-
-		// 结果区域
-		gbc.gridy++;
-		gbc.gridwidth = 3;
-		gbc.weightx = 1.0;
-		gbc.weighty = 0.3;
-		gbc.fill = GridBagConstraints.BOTH;
-		JScrollPane scrollPane = new JScrollPane(bruteForceOutputArea);
-		scrollPane.setPreferredSize(new Dimension(600, 200));
-		panel.add(scrollPane, gbc);
-	}
 	public void setMyCommandListener(MyCommandListener listener) {
 		this.listener=listener;
 		listener.setJTextField1(keyA);
@@ -403,7 +263,6 @@ public class mainwindow extends JFrame {
 		listener.setJTextField3(plaintextASCII);
 		listener.setJTextArea(outputEncrypt);
 		butEncrypt1.addActionListener(listener);
-
 	}
 	public void setMyCommandListenerB(MyCommandListener listener) {
 		listenerB=listener;
@@ -439,68 +298,13 @@ public class mainwindow extends JFrame {
 		butDecrypt2.addActionListener(listener);
 		butRandomKeyB.addActionListener(e -> generateRandomKey(keyB));
 	}
-
 	// 生成随机10位二进制密钥
-	private void generateRandomKey(JTextField keyField) {
+	public static void generateRandomKey(JTextField keyField) {
 		StringBuilder key = new StringBuilder();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 16; i++) {
 			key.append(Math.random() < 0.5 ? "0" : "1");
 		}
 		keyField.setText(key.toString());
 	}
-	// 添加设置暴力破解监听器的方法
-	public void setBruteForceListener(BruteForceListener listener) {
-		bruteForceStartButton.addActionListener(e -> {
-			List<String> plaintexts = new ArrayList<>();
-			List<String> ciphertexts = new ArrayList<>();
-			List<Boolean> useFlags = new ArrayList<>();
-			boolean hasError = false;
-			StringBuilder errorMessage = new StringBuilder("输入错误：\n");
 
-			for (int i = 0; i < 3; i++) {
-				String plaintext = bruteForceTextFields.get(i * 2).getText().trim();
-				String ciphertext = bruteForceTextFields.get(i * 2 + 1).getText().trim();
-				boolean isUsed = bruteForceCheckBoxes.get(i).isSelected();
-
-				plaintexts.add(plaintext);
-				ciphertexts.add(ciphertext);
-				useFlags.add(isUsed);
-
-				if (isUsed) {
-					if (!isValidBinary(plaintext, 8) || !isValidBinary(ciphertext, 8)) {
-						errorMessage.append("- 第 ").append(i + 1).append(" 对：明文和密文必须是8位二进制数。\n");
-						hasError = true;
-					}
-				} else if (!plaintext.isEmpty() || !ciphertext.isEmpty()) {
-					errorMessage.append("- 第 ").append(i + 1).append(" 对：未选中使用，但输入了数据。\n");
-					hasError = true;
-				}
-			}
-
-			int selectedCount = (int) useFlags.stream().filter(flag -> flag).count();
-			if (selectedCount == 0) {
-				errorMessage.append("- 请至少选择一对明文-密文对。\n");
-				hasError = true;
-			}
-
-			if (hasError) {
-				JOptionPane.showMessageDialog(this, errorMessage.toString(), "输入错误", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			listener.startBruteForce(plaintexts, ciphertexts, useFlags, this::updateBruteForceUI);
-		});
-	}
-
-	private boolean isValidBinary(String input, int expectedLength) {
-		return input.matches("[01]{" + expectedLength + "}");
-	}
-
-	// 更新暴力破解ui
-	private void updateBruteForceUI(String output, String time) {
-		SwingUtilities.invokeLater(() -> {
-			bruteForceOutputArea.setText(output);
-			jlabtime.setText(time);
-		});
-	}
 }
